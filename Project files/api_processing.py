@@ -1,3 +1,8 @@
+"""
+Created on Sat Nov 27 13:08:14 2021
+@author: Hamzah
+"""
+
 def get_routes(origin,destination,mode="transit",departure_time="1638023670"):
     url="https://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+destination+"&mode="+mode+ "&departure_time=" +departure_time + "&alternatives=true&key=AIzaSyA21A1YTf1TOEJPnb67dFJeQaLm1vdeEAc"
     
