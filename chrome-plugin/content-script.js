@@ -1,22 +1,11 @@
-document.body.style.backgroundColor = 'orange';
-
-
 let parent = document.getElementById("section-directions-trip-0").parentElement;
-parent.insertAdjacentHTML('afterBegin',
-'<button class="greenbutton" id="addco2button" style="\
-    border: none;\
-    padding: 8px 32px;\
-    text-align: center;\
-    text-decoration: none;\
-    display: inline-block;\
-    font-size: 12px;\
-    margin: 5px;\
-    transition-duration: 0.4s;\
-    cursor: pointer;\
-    background-color: white;\
-    color: black;\
-    border: 2px solid #4CAF50;\
-">Add CO<sub>2</sub> Values</button>');
+
+
+parent.insertAdjacentHTML('afterBegin', `
+<div class="buttonpadding">
+<button class="greenbutton" id="addco2button">Add CO<sub>2</sub> Values</button>
+</div>
+`);
 
 addco2button.addEventListener("click", async () => {
     addCo2();
