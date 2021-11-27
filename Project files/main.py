@@ -5,6 +5,8 @@ Created on Sat Nov 27 15:52:05 2021
 @author: Hamzah
 """
 
+from . import get_routes
+from . import co2_mapping
 
 def find_routes(origin="Nymphenburg Palace",destination="Marienplatz",departure_time="1638196470",driving_fuel="Diesel"):
     import requests
@@ -19,4 +21,5 @@ def find_routes(origin="Nymphenburg Palace",destination="Marienplatz",departure_
     for i in modes:
         dict1[i]=co2_mapping(dict[i],i,driving_fuel)
         
-    return dict1
+    json=tojson(dict1)
+    return json  #dict1
