@@ -1,5 +1,6 @@
 # route-planner
 
+![Logo](images/image2.PNG)
 ## Functions
 ### api_processing
 Use this function to get list of routes for particular journey. Function has three parameters: 
