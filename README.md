@@ -9,3 +9,4 @@ USe this function to get list of routes for particular journey. Function has thr
 ### Example
 result= get_routes("Munich","Berlin","transit")
 *result* will be list of dataframes (routes) broken into coordinates with distance and time
+![image](pictures/image1.PNG)
