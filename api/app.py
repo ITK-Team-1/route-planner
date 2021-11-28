@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 import requests
 import pandas as pd
@@ -15,7 +15,7 @@ class Route(Resource):
     def apple(self):
         return "c"
     def get_routes(self,origin, destination, mode="transit", departure_time="1638023670"):
-        url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&mode=" + mode + "&departure_time=" + departure_time + "&alternatives=true&key="
+        url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&mode=" + mode + "&departure_time=" + departure_time + "&alternatives=true&key=AIzaSyA21A1YTf1TOEJPnb67dFJeQaLm1vdeEAc"
         if (mode == "transit"):
             payload = {}
             headers = {}
@@ -229,18 +229,19 @@ class Route(Resource):
 
         if mode == "driving":
             updated_routes = []
+            print(driving_fuel)
 
             for i in range(len(list_of_routes)):
                 temp = []
                 route = list_of_routes[i]
                 for i in range(len(route)):
-                    if driving_fuel == "Diesel":
+                    if driving_fuel == "diesel":
                         temp.append((database_fuel.loc['Diesel']['Emission']) * route.iloc[i]['Distance'] / 1000)
-                    if driving_fuel == "Benzin":
+                    if driving_fuel == "benzin":
                         temp.append((database_fuel.loc['Benzin']['Emission']) * route.iloc[i]['Distance'] / 1000)
-                    if driving_fuel == "Natural gas":
+                    if driving_fuel == "natural gas":
                         temp.append((database_fuel.loc['Natural gas']['Emission']) * route.iloc[i]['Distance'] / 1000)
-                    if driving_fuel == "Electric":
+                    if driving_fuel == "electric":
                         temp.append((database_fuel.loc['Electric']['Emission']) * route.iloc[i]['Distance'] / 1000)
                 route_update = route.copy()
                 route_update['CO2 Emission'] = temp
@@ -336,18 +337,22 @@ class Route(Resource):
             dict1[i] = self.co2_mapping(dict[i], i, driving_fuel)
 
         json = self.tojson(dict1)
+        
         # json = json.dumps(dict1)
         return json  # dict1
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('origin', type=str)
-        #parser.add_argument('destination', type=str)
-        #parser.add_argument('departure_time', type=str)
-        #parser.add_argument('departure_time', type=str)
+        parser.add_argument('destination', type=str)
+        parser.add_argument('departure_time', type=str)
+        parser.add_argument('fuel_type', type=str)
         T=parser.parse_args()
-        t1 = self.find_routes(origin="Garching", destination="Olympiazentrum")
+        print(T)
+        json = self.find_routes(T['origin'], T['destination'], T['departure_time'], T['fuel_type'])
+        resp = jsonify(json)
+        resp.headers.add("Access-Control-Allow-Origin", "*")
         #t1 = json.dumps(t1)
-        return t1
+        return resp
 
 api.add_resource(Route, '/route', endpoint='bar')
 

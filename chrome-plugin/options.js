@@ -2,10 +2,10 @@ let car_options = `
     <div class="custom-options">
         <label for="fuel-type">Fuel type: </label>
         <select id="fuel-type" class="custom-select">
-            <option value="0">Benzin E10</option>
-            <option value="1">Diesel</option>
-            <option value="2">Erdgas</option>
-            <option value="3">Electric Car</option>
+            <option value="benzin">Benzin E10</option>
+            <option value="diesel">Diesel</option>
+            <option value="natural gas">Erdgas</option>
+            <option value="electric">Electric</option>
         </select>
     </div>
 
