@@ -87,7 +87,7 @@ function addCo2() {
         if (title == null) {
             break;
         }
-
+        let bestMatch = 0;
         let mode = getMode();
         if (mode !== 'transit') {
             // Read the distance
@@ -102,7 +102,7 @@ function addCo2() {
                 distance = parseInt(distanceText.replace(" m", ""));
             }
             //let diff = [];
-            let bestMatch = 0;
+            
             let diff = Math.abs(inputData[mode][0]["Total distance"]["0"] - distance);
             let bestDiff = diff;
             for (var j = 1; j < inputData[mode].length; j++) {
