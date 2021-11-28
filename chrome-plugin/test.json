@@ -1,50 +1,6 @@
-let parent = document.getElementById("pane");
-// Callback function to execute when mutations are observed
-const callback = function(mutationsList, observer) {
-    // Use traditional 'for loops' for IE 11
-    for (const mutation of mutationsList) {
-        if (mutation.type === 'childList' && window.location.pathname.startsWith("/maps/dir/")) {
-            try {
-                register_co2button();
-            } catch (e) {
-                if (e instanceof TypeError) {
-                    console.log("registering co2button unsuccsessfull");
-                    return;
-                }
-            }
-            try {
-                register_options_observer(document.getElementById("pane").children[0].children[0].children[0].children[0].children[1]);
-            } catch (e) {
-                if (e instanceof TypeError) {
-                    console.log("registering options unsuccsessfull");
-                    return;
-                }
-            }
-            observer.disconnect();
-        }
-    }
-};
-
-// Create an observer instance linked to the callback function
-const observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
-observer.observe(parent, { childList: true });
-
-function register_co2button() {
-    parent = document.getElementById("pane").children[0].children[0].children[0].children[0].children[1];
-    parent.insertAdjacentHTML('beforeEnd', `
-        <div class="buttonpadding">
-        <button class="greenbutton" id="addco2button">Add CO<sub>2</sub> Values</button>
-        </div>
-    `);
-    addco2button.addEventListener("click", async() => {
-        addCo2();
-    });
-}
-
-let testJson = {
-    "driving": [{
+{
+    "driving": [
+        {
             "Start_lat": {
                 "0": 48.2488716,
                 "1": 48.24874639999999,
@@ -502,7 +458,8 @@ let testJson = {
             }
         }
     ],
-    "transit": [{
+    "transit": [
+        {
             "Start_lat": {
                 "0": 48.26504329999999,
                 "1": 48.1617973,
@@ -784,7 +741,8 @@ let testJson = {
             }
         }
     ],
-    "bicycling": [{
+    "bicycling": [
+        {
             "Start_lat": {
                 "0": 48.2488716,
                 "1": 48.24874639999999,
@@ -1330,7 +1288,8 @@ let testJson = {
             }
         }
     ],
-    "walking": [{
+    "walking": [
+        {
             "Start_lat": {
                 "0": 48.2488716,
                 "1": 48.24874639999999,
@@ -2481,48 +2440,4 @@ let testJson = {
             }
         }
     ]
-};
-
-function addCo2() {
-    let i = 0;
-    let co2value = document.createElement("span");
-    co2value.classList.add("co2value");
-    co2value.style.marginLeft = "10px";
-    co2value.style.color = "#5e5e5e";
-    inputData = testJson;
-    while (true) {
-        // Ok here we do some kind of hacky matching
-        var title = document.getElementById("section-directions-trip-title-" + i);
-        if (title == null) {
-            break;
-        }
-        // Read the distance
-        let distance = parseFloat(title.parentElement.parentElement.children[0].children[1].innerText.replace(" km", "")) * 1000;
-        //let diff = [];
-        let bestMatch = 0;
-        let diff = Math.abs(inputData["driving"][0]["Total distance"]["0"] - distance);
-        let bestDiff = diff;
-        for (var j = 1; j < testJson["driving"].length; j++) {
-            diff = Math.abs(inputData["driving"][j]["Total distance"]["0"] - distance);
-            console.log(diff);
-            if (diff < bestDiff) {
-                console.log(j + "is Best");
-                console.log(bestDiff);
-                bestMatch = j;
-                bestDiff = diff;
-                console.log(bestDiff);
-            }
-        }
-
-        let text = Math.round(inputData["driving"][bestMatch]["Total CO2"]["0"] * 100) / 100 + "g CO<sub>2</sub>";
-        if (title.getElementsByClassName("co2value").length > 0) {
-            title.getElementsByClassName("co2value")[0].innerHTML = text;
-        } else {
-            co2value.innerHTML = text;
-
-            // We use this hack to be able to reuse the co2value var
-            title.innerHTML += co2value.outerHTML;
-        }
-        i++;
-    }
 }

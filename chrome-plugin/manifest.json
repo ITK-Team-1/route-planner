@@ -7,16 +7,20 @@
     "storage",
     "declarativeContent",
     "activeTab",
-    "scripting"
-  ],
+    "scripting",
+    "webNavigation",
+    "tabs"
+  ],  
   "content_scripts": [
     {
       "matches": [
-        "https://*.google.com/maps*"
+        "https://*.google.com/maps/*",
+        "https://*.google.de/maps/*"
       ],
       "js": [
-        "content-script.js",
-        "options.js"
+        "maps-change.js",
+        "options.js",
+        "content-script.js"
       ],
       "css": [
         "content-css.css"
